@@ -1,0 +1,11 @@
+{
+  "name": "performance-guard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Adaptive browser performance degradation and recovery monitor.",
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 5173"
+  }
+}
