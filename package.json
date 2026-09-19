@@ -1,0 +1,11 @@
+{
+  "name": "performance-governor",
+  "version": "1.0.0",
+  "description": "监控 FPS / 长任务 / 内存 / 主线程空闲，超阈值自动降级并可自动回升的自适应性能治理库",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/policy.test.js test/actions.test.js test/worker.test.js",
+    "start": "node --experimental-default-type=module tools/serve.mjs"
+  },
+  "license": "MIT"
+}

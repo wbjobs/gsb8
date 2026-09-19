@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>自适应性能降级演示 · Performance Governor</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>自适应性能降级演示</h1>
+    <div class="badge" id="backendBadge">决策后端：检测中…</div>
+  </header>
+
+  <main class="layout">
+    <!-- 左：实时状态 -->
+    <section class="panel status-panel">
+      <h2>实时状态</h2>
+
+      <div class="level-row">
+        <span>当前级别</span>
+        <div class="level-pills">
+          <span class="pill" data-level="0">L0 正常</span>
+          <span class="pill" data-level="1">L1 轻度</span>
+          <span class="pill" data-level="2">L2 中度</span>
+          <span class="pill" data-level="3">L3 重度</span>
+        </div>
+      </div>
+      <div class="reason" id="reasonText">—</div>
+
+      <div class="metrics-grid">
+        <div class="metric"><label>FPS</label><strong id="mFps">--</strong><small id="mFpsExtra"></small></div>
+        <div class="metric"><label>内存占用率</label><strong id="mMem">N/A</strong><small id="mMemExtra"></small></div>
+        <div class="metric"><label>长任务</label><strong id="mLT">0ms</strong><small id="mLTExtra"></small></div>
+        <div class="metric"><label>距上次空闲</label><strong id="mIdle">0ms</strong><small id="mIdleExtra"></small></div>
+      </div>
+
+      <div class="signals">
+        <div class="signal" id="sigMemory">memory <span class="sig-state">—</span></div>
+        <div class="signal" id="sigFps">fps <span class="sig-state">—</span></div>
+        <div class="signal" id="sigLT">longTask <span class="sig-state">—</span></div>
+        <div class="signal" id="sigIdle">idle <span class="sig-state">—</span></div>
+      </div>
+
+      <h3>已执行动作</h3>
+      <ul class="actions-list">
+        <li>动画：<code id="aAnim">on</code></li>
+        <li>Canvas 缩放：<code id="aCanvas">1.00×</code>（effective DPR <span id="aDpr">--</span>）</li>
+        <li>轮询间隔：<code id="aPoll">--</code></li>
+        <li>缓存策略：<code id="aCache">keep</code>（<span id="cacheSize">0</span> 条）</li>
+      </ul>
+
+      <h3>能力检测</h3>
+      <ul class="caps" id="capsList"></ul>
+    </section>
+
+    <!-- 中：工作负载舞台 -->
+    <section class="panel stage-panel">
+      <h2>工作负载</h2>
+
+      <div class="stage" id="animStage">
+        <div class="orb orb-a"></div>
+        <div class="orb orb-b"></div>
+        <div class="orb orb-c"></div>
+        <div class="spinner"></div>
+      </div>
+
+      <canvas id="particleCanvas" width="640" height="300"></canvas>
+
+      <div class="controls">
+        <button id="btnLongTask" class="danger">💥 模拟长任务（400ms × 8）</button>
+        <button id="btnHugeLongTask" class="danger">💀 持续阻塞 4 秒</button>
+        <button id="btnAllocate">🧠 制造内存压力</button>
+        <button id="btnGcHints">♻️ 解除内存压力</button>
+        <button id="btnRecover">✅ 恢复（停止负载）</button>
+      </div>
+
+      <p class="hint">
+        点击「模拟长任务」后观察：约 3~5 秒内级别自动上升，动画关闭、Canvas 变模糊、
+        轮询变慢、缓存被释放；停止负载后持续健康数秒，级别逐级自动回升。
+      </p>
+    </section>
+
+    <!-- 右：日志与配置 -->
+    <section class="panel log-panel">
+      <h2>事件日志</h2>
+      <ul class="log" id="eventLog"></ul>
+
+      <h2>阈值配置</h2>
+      <div class="config-form">
+        <label>FPS 轻度 ≤ <input id="cfgFps1" type="number" value="50" /></label>
+        <label>FPS 中度 ≤ <input id="cfgFps2" type="number" value="30" /></label>
+        <label>内存轻度 ≥ <input id="cfgMem1" type="number" value="0.65" step="0.05" /></label>
+        <label>内存中度 ≥ <input id="cfgMem2" type="number" value="0.8" step="0.05" /></label>
+        <label>长任务轻度(ms) ≥ <input id="cfgLt1" type="number" value="250" /></label>
+        <label>长任务中度(ms) ≥ <input id="cfgLt2" type="number" value="600" /></label>
+        <label>恢复确认(tick) <input id="cfgRecover" type="number" value="4" /></label>
+        <div class="config-actions">
+          <button id="btnApplyConfig">应用配置</button>
+          <button id="btnResetConfig" class="ghost">重置</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./demo.js"></script>
+</body>
+</html>

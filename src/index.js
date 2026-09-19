@@ -1,0 +1,11 @@
+export { PerformanceGovernor, createGovernor } from './governor.js';
+export { createPolicy, evaluateSignals, normalizeConfig } from './policy.js';
+export { DEFAULT_CONFIG } from './default-config.js';
+export { createFpsSampler } from './samplers/fps.js';
+export { createLongTaskSampler } from './samplers/long-task.js';
+export { createMemorySampler } from './samplers/memory.js';
+export { createIdleSampler } from './samplers/idle.js';
+export { createAnimationController } from './actions/animation.js';
+export { createCanvasRegistry } from './actions/canvas.js';
+export { createPollingRegistry } from './actions/polling.js';
+export { createManagedCache, createCacheRegistry } from './actions/cache.js';
